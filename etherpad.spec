@@ -8,6 +8,7 @@
 # hg archive --type=tbz2 --prefix=%{name}-%{version} %{name}-%{version}-%{subver}.tar.bz2
 %define		subver	20100429
 %define		rel		0.1
+%include	/usr/lib/rpm/macros.java
 Summary:	A web-based realtime collaborative document editor
 Name:		etherpad
 Version:	0
@@ -17,7 +18,6 @@ Group:		X11/Applications
 URL:		http://code.google.com/p/etherpad/
 Source0:	%{name}-%{version}-%{subver}.tar.bz2
 # Source0-md5:	3dd182ec529c56f36ebcfe089389a7ac
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Patch0:		%{name}-fix-paths.patch
 #BuildRequires:	dnsjava
 #BuildRequires:	jBCrypt
@@ -30,13 +30,15 @@ Patch0:		%{name}-fix-paths.patch
 BuildRequires:	jpackage-utils
 #BuildRequires:	mysql-connector-java >= 5.1.0
 #BuildRequires:	mysql-server
+BuildRequires:	rpm-javaprov
+BuildRequires:	rpmbuild(macros) >= 1.546
 #BuildRequires:	scala >= 2.7
 #BuildRequires:	tagsoup
 #BuildRequires:	tomcat6-servlet-2.5-api
-Requires:	java >= 1:1.6.0
 Requires:	jpackage-utils
-Requires:	mysql-server
+Suggests:	mysql
 BuildArch:	noarch
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Open source release of EtherPad, a web-based realtime collaborative
@@ -113,7 +115,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc COPYING README
-%config(noreplace) %{_sysconfdir}/etherpad.localdev-default.properties
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/etherpad.localdev-default.properties
 %attr(755,root,root) %{_bindir}/etherpad-*.sh
 %{_datadir}/etherpad
 %{_javadir}/etherpad.jar
