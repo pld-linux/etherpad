@@ -1,0 +1,65 @@
+diff -ur a/etherpad/bin/run-local.sh b/etherpad/bin/run-local.sh
+--- a/etherpad/bin/run-local.sh	2009-12-26 04:53:09.000000000 +0100
++++ b/etherpad/bin/run-local.sh	2010-05-12 14:01:48.383977371 +0200
+@@ -14,7 +14,7 @@
+ #  See the License for the specific language governing permissions and
+ #  limitations under the License.
+ 
+-mkdir -p data/appjet
++mkdir -p /var/run/etherpad/appjet
+ 
+ MXRAM="1G"
+ if [ ! -z $1 ]; then
+@@ -24,7 +24,7 @@
+     fi
+ fi
+ 
+-CP="appjet-eth-dev.jar:data"
++CP="/usr/share/java/etherpad.jar:/var/run/etherpad"
+ for f in lib/*.jar; do
+     CP="$CP:$f"
+ done
+@@ -34,9 +34,9 @@
+ fi
+ 
+ # etherpad properties file
+-cfg_file=./data/etherpad.local.properties
++cfg_file=/var/run/etherpad/etherpad.local.properties
+ if [ ! -f $cfg_file ]; then
+-  cfg_file=./etc/etherpad.localdev-default.properties
++  cfg_file=/etc/etherpad.localdev-default.properties
+ fi
+ if [[ $1 == "--cfg" ]]; then
+   cfg_file=${2}
+@@ -57,7 +57,7 @@
+     -XX:CMSIncrementalSafetyFactor=50 \
+     -XX:+PrintGCDetails \
+     -XX:+PrintGCTimeStamps \
+-    -Xloggc:./data/logs/backend/jvm-gc.log \
++    -Xloggc:/var/log/etherpad/backend/jvm-gc.log \
+     -Dappjet.jmxremote=true \
+     $JAVA_OPTS \
+     net.appjet.oui.main \
+diff -ur a/etherpad/etc/etherpad.localdev-default.properties b/etherpad/etc/etherpad.localdev-default.properties
+--- a/etherpad/etc/etherpad.localdev-default.properties	2009-12-26 04:53:09.000000000 +0100
++++ b/etherpad/etc/etherpad.localdev-default.properties	2010-05-12 14:05:16.923977495 +0200
+@@ -1,5 +1,5 @@
+-ajstdlibHome = ../infrastructure/framework-src/modules
+-appjetHome = ./data/appjet
++ajstdlibHome = /usr/share/etherpad/framework-src/modules
++appjetHome = /var/run/etherpad/appjet
+ devMode = true
+ etherpad.adminPass = password
+ etherpad.fakeProduction = false
+@@ -9,8 +9,8 @@
+ etherpad.SQL_PASSWORD = password
+ etherpad.SQL_USERNAME = etherpad
+ listen = 9000
+-logDir = ./data/logs
+-modulePath = ./src
++logDir = /var/log/etherpad
++modulePath = /usr/share/etherpad/src
+ transportPrefix = /comet
+ transportUseWildcardSubdomains = true
+-useVirtualFileRoot = ./src
++useVirtualFileRoot = /usr/share/etherpad/src
