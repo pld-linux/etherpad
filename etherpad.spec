@@ -8,7 +8,6 @@
 # hg archive --type=tbz2 --prefix=%{name}-%{version} %{name}-%{version}-%{subver}.tar.bz2
 %define		subver	20100429
 %define		rel		0.1
-%include	/usr/lib/rpm/macros.java
 Summary:	A web-based realtime collaborative document editor
 Name:		etherpad
 Version:	0
