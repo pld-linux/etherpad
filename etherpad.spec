@@ -46,7 +46,7 @@ document editor.
 %prep
 %setup -qc
 mv etherpad-%{version}/trunk/* .
-%patch0 -p1
+%patch -P0 -p1
 
 # remove backup and git files
 find -name '.gitignore' -exec rm -f '{}' \;
